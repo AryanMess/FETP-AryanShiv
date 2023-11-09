@@ -1,7 +1,8 @@
 # FETP-AryanShiv
 Creating a Flask Application containing Google's OAuth 2 Application for Login 
 
-    ![OAuth_diagram](https://github.com/AryanMess/FETP-AryanShiv/assets/75351276/bb3cf74d-dd9d-4cb0-bdec-f9ade31985b9)
+    
+https://www.tutorialspoint.com/oauth2.0/images/OAuth_diagram.jpg
 
 Flask Web Application with Google OAuth 2.0 Authentication Documentation
 Introduction
