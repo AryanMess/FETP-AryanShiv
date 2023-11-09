@@ -2,7 +2,7 @@
 Creating a Flask Application containing Google's OAuth 2 Application for Login 
 
     
-!(https://www.tutorialspoint.com/oauth2.0/images/OAuth_diagram.jpg)
+![Architecture](https://www.tutorialspoint.com/oauth2.0/images/OAuth_diagram.jpg)
 
 Flask Web Application with Google OAuth 2.0 Authentication Documentation
 Introduction
