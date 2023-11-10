@@ -9,7 +9,6 @@ Created on Thu Nov  9 12:06:04 2023
 import json
 import os
 import sqlite3
-import os
 
 
 
@@ -76,7 +75,7 @@ def index():
             )   
         )
     """
-        return render_template("index.html", 
+        return render_template("diamond.html", 
                                name=current_user.name, 
                                email=current_user.email, 
                                profile_pic=current_user.profile_pic)
@@ -169,6 +168,83 @@ def callback():
 def logout():
     logout_user()
     return redirect(url_for("index"))
+
+@app.route("/diamond", methods=["GET", "POST"])
+def diamond():
+    diamond_pattern = ""
+    if request.method == "POST":
+        try:
+            input_len = int(request.form["input_len"])
+
+            if 1 <= input_len <= 100:
+                diamond_pattern = generate_diamond_pattern(input_len)
+            else:
+                diamond_pattern = "Please enter a valid number between 1 and 100."
+        except ValueError:
+            diamond_pattern = "Please enter a valid number between 1 and 100."
+
+    # Get user information if authenticated
+    user_info = {}
+    if current_user.is_authenticated:
+        user_info["name"] = current_user.name
+        user_info["email"] = current_user.email
+        user_info["profile_pic"] = current_user.profile_pic
+
+    return render_template("diamond.html", diamond_pattern=diamond_pattern, **user_info)
+
+
+
+# Function to generate the diamond pattern
+def generate_diamond_pattern(input_len):
+    input_word = "FORMULAQSOLUTIONS"
+
+    if input_len % 2 == 0:
+        input_len += 1
+
+    pyramid_1 = [j for j in range(input_len, 0, -2)][::-1]
+    #pyramid_2 = [j for j in range(input_len, 0, -2)]
+
+    bridge_word = " "
+
+    increment = 0
+    j = pyramid_1[increment]
+    diamond_pattern = ""  # Initialize the diamond pattern as an empty string
+
+    def append_diamond_pattern(word, spaces):
+        nonlocal diamond_pattern
+        diamond_pattern += " " * spaces + word + "\n"
+
+    for i in range(len(input_word)):
+        loop_word = ""
+        for k in range(i, i + j):
+            try:
+                loop_word = loop_word + input_word[k]
+            except IndexError:
+                index = (j + i - k)
+                loop_word = loop_word + input_word[:index]
+                break
+        spaces = len(input_word) - len(loop_word) // 2
+        append_diamond_pattern(loop_word, spaces)
+
+        increment += 1
+        if increment >= len(pyramid_1):
+            bridge_word = loop_word
+            break
+        j = pyramid_1[increment]
+
+    i = 0
+    loop_word = bridge_word
+    main_count = increment
+    increment = 0
+
+    for k in range(i + 1, input_len - main_count + 1):
+        loop_word = bridge_word[k:len(bridge_word) - k]
+        spaces = len(input_word) - len(loop_word) // 2
+        append_diamond_pattern(loop_word, spaces)
+
+    return diamond_pattern # Return the generated diamond pattern as a string
+
+    
 
 if __name__ == '__main__':
     app.run(debug=True)

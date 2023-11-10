@@ -1,0 +1,56 @@
+<!-- templates/index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <script>
+        function displayTime() {
+            var now = new Date();
+            var hours = now.getHours();
+            var minutes = now.getMinutes();
+            var seconds = now.getSeconds();
+
+            // Add leading zero if the value is less than 10
+            hours = (hours < 10) ? "0" + hours : hours;
+            minutes = (minutes < 10) ? "0" + minutes : minutes;
+            seconds = (seconds < 10) ? "0" + seconds : seconds;
+
+            var timeString = hours + ":" + minutes + ":" + seconds;
+            document.getElementById("current-time").innerHTML = "Current Time in Indian Standard Time: " + timeString;
+
+            // Update every 1 second
+            setTimeout(displayTime, 1000);
+        }
+        
+        // Call the function when the page is loaded
+        window.onload = displayTime;
+    </script>
+</head>
+<body>
+    <p>Hello, {{ name }}! You're logged in! and I hope you have a good day!</p>
+    <p>Your Email: {{ email }}</p>
+    <div>
+        <p>Your Picture:</p>
+        <img src="{{ profile_pic }}" alt="Google profile pic"></img>
+        <p id="current-time"></p> <!-- Add this line for displaying the current time -->
+    </div>
+
+    <!-- Diamond Pattern Generator Form -->
+    <h2>Diamond Pattern Generator</h2>
+    <form method="POST" action="/diamond">
+        <label for="input_len">Enter the number of lines (1 to 100):</label>
+        <input type="number" name="input_len" min="1" max="100" required>
+        <br>
+        <input type="submit" value="Generate Diamond">
+    </form>
+
+    {% if diamond_pattern %}
+    <h2>Diamond Pattern:</h2>
+    <pre>{{ diamond_pattern }}</pre>
+    {% endif %}
+
+    <a class="button" href="/logout">Logout</a>
+</body>
+</html>
